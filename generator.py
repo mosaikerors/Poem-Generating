@@ -127,6 +127,7 @@ if __name__ == '__main__':
     from train import sample_data
     config = G_Config()
     model = Generator(config)
+    print(model)
     model.init_param()
     out = model.sample(batch_size=20, seq_len=10)
     sample_data(model)
