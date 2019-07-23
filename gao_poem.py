@@ -13,6 +13,7 @@ from poem_pre_do import gen_real_poem
 from poem_pre_do import gen_dictionary
 import argparse
 import visdom
+import os
 
 parser = argparse.ArgumentParser(description="Training Configuration")
 parser.add_argument("--cuda", default=None, type=int, help="Set the cuda number")
@@ -26,6 +27,7 @@ if opt.cuda is not None and not torch.cuda.is_available():
 torch.manual_seed(opt.rand_seed)
 if opt.cuda is not None:
     torch.cuda.set_device(opt.cuda)
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
 
 def main():
@@ -76,9 +78,7 @@ def main():
     g_dataset = SequenceDataset(REAL_DATA_PATH)
     g_dataloader = DataLoader(g_dataset, batch_size=g_config.batch_size, shuffle=True,
                               pin_memory=True if opt.cuda is not None else False)
-    for step, data in enumerate(g_dataloader, 1):
-        print(step)
-        print(data)
+
     # pre-train the generator model.
     print("Pre train our Generator with MLE")
     for i in range(g_config.pretrain_epoch):
@@ -176,6 +176,11 @@ def main():
                   optimizer=dis_gan_optim, training_epoch=2, name="Discriminator", vis=vis_d)
             discriminator.eval()
 
+    # save the training state
+    torch.save(discriminator.state_dict(), 'checkpoints/discriminator.pth')
+    torch.save(dis_gan_optim.state_dict(), 'checkpoints/dis_gan_optim.pth')
+    torch.save(my_model.state_dict(), 'checkpoints/my_model.pth')
+    torch.save(gen_gan_optim.state_dict(), 'checkpoints/gen_gan_optim.pth')
 
 if __name__ == '__main__':
     main()

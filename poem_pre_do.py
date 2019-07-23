@@ -29,7 +29,7 @@ def gen_dictionary(data_path):
     return word_to_ix, ix_to_word
 
 
-def gen_real_poem(source_path, output_path, word_to_ix, num):
+def gen_real_poem(source_path, output_path, word_to_ix, num, seq_len=11):
     a = 0
     file = open(source_path, 'r', encoding='utf-8')
     output_file = open(output_path, 'w', encoding='utf-8')
@@ -44,6 +44,8 @@ def gen_real_poem(source_path, output_path, word_to_ix, num):
                 left_blanket = poem.find('（')
             poem = poem.replace('\n', '').replace('\r', '')
             for sentence in poem.split('。')[:-1]:
+                if len(sentence) != seq_len:
+                    continue
                 ix_poem = []
                 for zi in sentence:
                     ix_poem.append(word_to_ix[zi])

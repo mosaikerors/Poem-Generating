@@ -1,6 +1,6 @@
 
 class G_Config(object):
-    def __init__(self, dict_size=5000, seq_len=11):
+    def __init__(self, dict_size=5000, seq_len=20):
         self.dict_size = dict_size
         self.embed_dim = 32
         self.hidden_size = 32
@@ -8,7 +8,7 @@ class G_Config(object):
         self.batch_first = True
         self.batch_size = 128
         self.pretrain_epoch = 40
-        self.total_epoch = 10   # the total epoch of the adversarial training
+        self.total_epoch = 100   # the total epoch of the adversarial training
         self.ad_epoch = 1       # the training epoch of every adversarial train
         self.sample_num = 10000
         self.cuda = None

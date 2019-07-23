@@ -22,7 +22,7 @@ class Visdom_line(object):
                            name="%s" % self._name,
                            opts=dict(legend=[self._name]))
         else:
-            self._vis.updateTrace(X=torch.Tensor([self._start_step]),
+            self._vis.line(X=torch.Tensor([self._start_step]),
                                   Y=y if isinstance(y, torch.Tensor) else torch.Tensor([y]),
                                   win=self._win,
                                   name="%s" % self._name)
