@@ -13,6 +13,7 @@ from poem_pre_do import gen_real_poem
 from poem_pre_do import gen_dictionary
 import argparse
 import visdom
+import os
 
 parser = argparse.ArgumentParser(description="Training Configuration")
 parser.add_argument("--cuda", default=None, type=int, help="Set the cuda number")
@@ -25,7 +26,7 @@ if opt.cuda is not None and not torch.cuda.is_available():
 
 torch.manual_seed(opt.rand_seed)
 if opt.cuda is not None:
-    torch.cuda.set_device(opt.cuda)
+    os.environ["CUDA_VISIBLE_DEVICES"] = str(opt.cuda)
 
 
 def main():
@@ -65,7 +66,6 @@ def main():
     gen_real_poem(ALL_DATA_PATH, REAL_DATA_PATH, word_to_ix, g_config.sample_num)
     # sample_data(model=oracle_model, save_path=REAL_DATA_PATH,
     #     #             sample_num=g_config.sample_num, seq_len=g_config.seq_len)
-
 
     g_criterion = nn.NLLLoss()
 
